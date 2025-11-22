@@ -1,0 +1,1 @@
+# DedoMedoEshop_VaiiSemestralnaPraca
