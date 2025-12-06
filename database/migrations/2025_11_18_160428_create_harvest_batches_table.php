@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('harvest_batches', function (Blueprint $table) {
             $table->id();
+            $table->string('batch_code');
+            $table->date('harvest_date');
             $table->timestamps();
         });
     }
