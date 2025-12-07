@@ -18,7 +18,7 @@
                 <li><a href="#" class="nav__link">Kontakt</a></li>
             </ul>
         </div>
-
+        <a href="{{ route('login') }}" class="nav__link {{ request()->routeIs('login') ? 'active' : '' }}">Login</a>
         <a href="#" class="cart-icon" aria-label="Open cart">🛒</a>
     </div>
 </nav>
