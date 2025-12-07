@@ -1,8 +1,555 @@
-body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5;}
-.container{max-width:1100px;margin:auto;padding:0 1rem;}
-.nav{display:flex;gap:1rem;align-items:center;padding:.75rem 0;border-bottom:1px solid #eee;}
-.logo{font-weight:700;text-decoration:none;color:#222;}
-.nav__links{list-style:none;margin-left:auto;display:flex;gap:1rem;padding:0;}
-.nav__link{color:#333;text-decoration:none;padding:.25rem .5rem;border-radius:.5rem;}
-.nav__link:hover{background:#f3f3f3;}
-.site-footer{border-top:1px solid #eee;padding:1rem 0;color:#666;font-size:.95rem;}
+/* resources/css/app.css */
+
+body {
+    margin: 0;
+    font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 2px solid #f0f0f0;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 120; /* bumped so header stays above the mobile overlay */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    /* CSS var to hold header height (set by JS on init/responsive) */
+    --nav-top: 64px;
+}
+
+.nav .container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: #222;
+    transition: transform 0.2s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo__icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.nav__links {
+    list-style: none;
+    margin: 0;
+    margin-left: auto;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0;
+}
+
+.nav__link {
+    color: #555;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav__link:hover {
+    background: #fef3c7;
+    color: #222;
+}
+
+.nav__link.active {
+    color: #f59e0b;
+    background: #fffbeb;
+}
+
+/* Cart icon */
+.cart-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.cart-icon:hover {
+    background: #fde68a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+/* Footer */
+.site-footer {
+    border-top: 1px solid #eee;
+    padding: 1rem 0;
+    font-size: 0.95rem;
+
+    /* visual theme */
+    background: #FBF1E6;
+}
+
+.footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color: #5B4636;
+}
+
+/* make 3-column footer with nicer proportions */
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 0.8fr;
+    gap: 40px 36px;
+    align-items: start;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.brand svg {
+    flex: 0 0 48px;
+    border-radius: 50%;
+}
+
+.brand-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #6B4F3A;
+}
+
+.desc {
+    max-width: 420px;
+    line-height: 1.6;
+    color: #6B5A4A;
+    margin: 0;
+}
+
+/* contact and social columns */
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #6B5A4A;
+}
+
+.contact-list li { display:flex; align-items:center; gap:10px; }
+.contact-list .icon { width:18px; height:18px; margin:0; vertical-align:middle; fill:#6B4F3A; }
+
+.social-icons { display:flex; gap:12px; align-items:center; }
+
+/* separator and bottom */
+.footer-sep { margin: 28px 0; border-top:1px solid rgba(107,90,74,0.08); }
+
+.footer-bottom { text-align:center; padding:18px 0 0; color:#6B5A4A; font-size:0.95rem; }
+
+/* Login page styles */
+.login-page {
+    min-height: calc(100vh - 120px); /* minus header+footer approx */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+}
+
+.login-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 18px 45px rgba(91, 70, 54, 0.18);
+    padding: 2rem 1.75rem 1.75rem;
+    border: 1px solid rgba(91, 70, 54, 0.06);
+}
+
+.login-card__header {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.login-card__title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #6B4F3A;
+    margin: 0 0 0.35rem;
+}
+
+.login-card__subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #8B735E;
+}
+
+.login-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.login-card__footer {
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+    color: #6B5A4A;
+    text-align: center;
+}
+
+.login-link {
+    color: #D97706;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.login-form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.login-form__label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #5B4636;
+}
+
+.login-form__input {
+    width: 100%;
+    padding: 0.65rem 0.1rem;
+    border-radius: 0.6rem;
+    border: 1px solid #E5D5C4;
+    background: #FFFCF8;
+    font-size: 0.95rem;
+    color: #3F2F22;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.login-form__input::placeholder {
+    color: #B89D84;
+}
+
+.login-form__input:focus {
+    outline: none;
+    border-color: #D97706;
+    box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.18);
+    background-color: #FFFDF9;
+}
+
+.login-form__input--error {
+    border-color: #DC2626;
+    background-color: #FEF2F2;
+}
+
+.login-form__checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #5B4636;
+}
+
+.login-form__checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: #D97706;
+}
+
+.login-form__checkbox-label {
+    cursor: pointer;
+}
+
+.login-form__error-message {
+    font-size: 0.82rem;
+    color: #B91C1C;
+}
+
+.login-flash-error {
+    border-radius: 0.75rem;
+    padding: 0.75rem 0.9rem;
+    background: #FEF2F2;
+    border: 1px solid #FCA5A5;
+    color: #7F1D1D;
+    font-size: 0.9rem;
+}
+
+.login-flash-error__text {
+    margin: 0;
+}
+
+.login-submit-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.2rem;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #FBBF24, #D97706);
+    color: #1F1309;
+    font-weight: 600;
+    font-size: 0.98rem;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.login-submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 25px rgba(217, 119, 6, 0.3);
+}
+
+.login-submit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 16px rgba(146, 64, 14, 0.25);
+}
+
+.login-submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+@media (max-width: 640px) {
+    .login-card {
+        padding: 1.75rem 1.25rem 1.5rem;
+        border-radius: 0.9rem;
+    }
+
+    .login-card__title {
+        font-size: 1.4rem;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1023px) {
+    /* slightly tighter for tablet */
+    .footer-inner { padding: 40px 20px; }
+    .footer-grid { gap: 28px; grid-template-columns: 1fr 1fr 0.9fr; }
+}
+
+@media (min-width: 640px) {
+    .nav__links { margin-left: 0; } /* zruš auto margin na linkách */
+    .cart-icon { margin-left: auto; } /* košík pôjde úplne doprava */
+}
+
+@media (max-width: 900px) {
+    /* stack into single column on narrower screens */
+    .footer-inner { padding: 32px 16px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 18px; }
+
+    /* center brand and social for small screens */
+    .brand { justify-content: center; }
+    .desc { max-width: none; text-align: center; }
+    .contact-list { align-items: center; text-align: center; }
+    .contact-list li { justify-content: center; }
+    .social { text-align: center; }
+    .social-icons { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+    .footer-inner { padding: 22px 12px; }
+    .brand svg { width:44px; height:44px; }
+    .brand-name { font-size:1rem; }
+    .nav, .site-footer { padding-left: 8px; padding-right: 8px; }
+}
+
+/* Responsive nav: burger toggle, overlay/drawer and breakpoints */
+
+/* Burger toggle (hidden on desktop) */
+.nav__toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: inherit;
+    margin-left: auto;
+}
+
+.nav__burger {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    position: relative;
+    transition: transform .25s ease, background .25s ease;
+}
+.nav__burger::before,
+.nav__burger::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transition: transform .25s ease, top .25s ease, opacity .2s ease;
+}
+.nav__burger::before { top: -7px; }
+.nav__burger::after  { top: 7px; }
+
+/* Mobile overlay/drawer - full width from below the header */
+.nav__menu {
+    position: static; /* default for larger screens; mobile rules override */
+    transform: none;
+    opacity: 1;
+    height: auto;
+    overflow: visible;
+    background: transparent;
+    box-shadow: none;
+    box-sizing: border-box;
+    padding-bottom: 0;
+}
+
+/* Default: hide close button (only show on mobile overlay open) */
+.nav__close { display: none; }
+
+/* mobile-only helper: hide by default */
+.mobile-only { display: none !important; }
+
+@media (max-width: 639px) {
+    /* show toggle */
+    .nav__toggle { display: inline-flex; }
+
+    /* hide inline header links if present outside menu */
+    .nav .container > .nav__links { display: none; }
+
+    /* overlay/drawer styles for mobile */
+    .nav__menu {
+        position: fixed;
+        top: var(--nav-top, 64px);
+        left: 0;
+        right: 0;
+        transform: translateY(-100%);
+        opacity: 0;
+        height: 0;
+        overflow: auto;
+        background: #fff;
+        transition: transform .28s ease, opacity .28s ease;
+        z-index: 110; /* below the header which has higher z-index */
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        padding-bottom: 24px;
+        box-sizing: border-box;
+    }
+
+    .nav__menu.open {
+        transform: translateY(0);
+        opacity: 1;
+        height: calc(100vh - var(--nav-top, 64px));
+    }
+
+    /* close button hidden by default but shown when menu open */
+    .nav__close { display: none; }
+    .nav__menu.open .nav__close { display: inline-flex; }
+
+    .nav__close {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        background: #fff;
+        border: 1px solid rgba(0,0,0,0.06);
+        height: 40px;
+        width: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    /* ensure the first link isn't hidden under the close button when open */
+    .nav__menu.open .nav__links { padding-top: calc(var(--nav-top, 64px) + 8px); }
+
+    /* make links stack nicely */
+    .nav__menu .nav__links { display:flex; flex-direction:column; gap:0; padding:1rem; margin:0; }
+    .nav__menu .nav__link { padding: 1rem 0.75rem; border-radius: 0.375rem; font-size: 1.05rem; }
+
+    /* show mobile-only items only when menu is open */
+    .nav__menu.open .mobile-only { display: inline-flex !important; }
+}
+
+/* Ensure close button and overlay visuals are disabled on tablet+ and desktop */
+@media (min-width: 640px) {
+    .nav__close { display: none !important; border: 0 !important; box-shadow: none !important; }
+    .nav__menu { position: static !important; transform: none !important; opacity: 1 !important; height: auto !important; overflow: visible !important; background: transparent !important; box-shadow: none !important; padding: 0 !important; }
+}
+
+
+
+/* Extra forceful desktop/tablet overrides to remove the floating white box and X frame */
+@media (min-width: 640px) {
+  /* target the menu when rendered inside the header container */
+  .nav > .container > .nav__menu,
+  .nav .nav__menu,
+  .nav__menu {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
+    height: auto !important;
+  }
+
+  /* ensure the close button is hidden on larger screens */
+  .nav__close { display: none !important; }
+}

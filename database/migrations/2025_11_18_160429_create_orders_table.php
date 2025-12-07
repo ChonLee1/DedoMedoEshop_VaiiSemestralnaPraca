@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique(); // napr. ORD-2025-0001
+            $table->string('status')->default('pending'); // pending, confirmed, shipped, delivered, cancelled
+            $table->integer('total_cents'); // celková suma v centoch
+            $table->string('customer_name');
+            $table->string('email');
+            $table->string('phone');
             $table->timestamps();
         });
     }
