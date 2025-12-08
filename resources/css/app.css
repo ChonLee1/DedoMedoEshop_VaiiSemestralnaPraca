@@ -1,29 +1,34 @@
-/* resources/css/app.css */
 
 body {
     margin: 0;
     font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
-    line-height: 1.5;
+    line-height: 1.5; /* lepšia čitateľnosť textu */
 }
 
 .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 1rem;
+    max-width: 1100px;     /* centrálna šírka obsahu */
+    margin: 0 auto;        /* vycentrovanie */
+    padding: 0 1rem;       /* vodorovné okraje na malých displejoch */
 }
 
-/* Navigation */
+/*
+   HLAVIČKA / NAVIGÁCIA
+   - lepí sa hore (sticky)
+   - tiene na oddelenie od obsahu
+   - CSS premenná --nav-top slúži na výšku hlavičky
+   */
+
 .nav {
     display: flex;
     align-items: center;
     padding: 1rem 0;
     border-bottom: 2px solid #f0f0f0;
     background: #fff;
-    position: sticky;
+    position: sticky;   /* zostáva prilepená k vrchu pri scrollovaní */
     top: 0;
-    z-index: 120; /* bumped so header stays above the mobile overlay */
+    z-index: 120;       /* nad mobilným overlay menu */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    /* CSS var to hold header height (set by JS on init/responsive) */
+    /* CSS premenna pre výšku hlavičky (môže ju doplniť JS) */
     --nav-top: 64px;
 }
 
@@ -34,6 +39,7 @@ body {
     width: 100%;
 }
 
+/* Logo + ikonka: jemná interakcia na hover */
 .logo {
     display: flex;
     align-items: center;
@@ -42,13 +48,14 @@ body {
     font-size: 1.5rem;
     text-decoration: none;
     color: #222;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease; /* malé zväčšenie pri hover */
 }
 
 .logo:hover {
     transform: scale(1.05);
 }
 
+/* Kruhové pozadie pre ikonku loga s teplým prechodom */
 .logo__icon {
     width: 50px;
     height: 50px;
@@ -60,15 +67,17 @@ body {
     font-size: 1.5rem;
 }
 
+/* Zoznam odkazov vpravo (auto margin) */
 .nav__links {
     list-style: none;
     margin: 0;
-    margin-left: auto;
+    margin-left: auto;  /* odsunie odkazy doprava */
     display: flex;
     gap: 0.5rem;
     padding: 0;
 }
 
+/* Jednotlivé odkazy: zaoblenie, prechody farieb pri hover */
 .nav__link {
     color: #555;
     text-decoration: none;
@@ -79,16 +88,19 @@ body {
 }
 
 .nav__link:hover {
-    background: #fef3c7;
+    background: #fef3c7; /* svetlá medová */
     color: #222;
 }
 
+/* Aktívna stránka zvýraznená farbou */
 .nav__link.active {
     color: #f59e0b;
     background: #fffbeb;
 }
 
-/* Cart icon */
+/* IKONA KOŠÍKA
+   - klikateľná, s tieňom a jemnou animáciou */
+
 .cart-icon {
     width: 40px;
     height: 40px;
@@ -106,18 +118,18 @@ body {
 
 .cart-icon:hover {
     background: #fde68a;
-    transform: translateY(-2px);
+    transform: translateY(-2px); /* malý „zdvih“ pri hover */
     box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
 }
+/*PÄTA (FOOTER)
+   - jemná tématická paleta
+   - 3-stĺpcová mriežka */
 
-/* Footer */
 .site-footer {
     border-top: 1px solid #eee;
     padding: 1rem 0;
     font-size: 0.95rem;
-
-    /* visual theme */
-    background: #FBF1E6;
+    background: #FBF1E6; /* teplé pozadie */
 }
 
 .footer-inner {
@@ -128,7 +140,7 @@ body {
     color: #5B4636;
 }
 
-/* make 3-column footer with nicer proportions */
+/* Mriežka s mierne odlišnými šírkami stĺpcov (brand / kontakty / sociálne) */
 .footer-grid {
     display: grid;
     grid-template-columns: 1.2fr 1fr 0.8fr;
@@ -136,6 +148,7 @@ body {
     align-items: start;
 }
 
+/* Stĺpec značky a krátky claim */
 .brand {
     display: flex;
     align-items: center;
@@ -154,6 +167,7 @@ body {
     color: #6B4F3A;
 }
 
+/* Popis – limitovaná šírka kvôli dlhým textom */
 .desc {
     max-width: 420px;
     line-height: 1.6;
@@ -161,7 +175,7 @@ body {
     margin: 0;
 }
 
-/* contact and social columns */
+/* Kontakty a sociálne siete – jednoduchý stĺpec s ikonami */
 .contact-list {
     list-style: none;
     padding: 0;
@@ -177,34 +191,38 @@ body {
 
 .social-icons { display:flex; gap:12px; align-items:center; }
 
-/* separator and bottom */
+/* Deliaca čiara + malý spodný riadok s copyrightom */
 .footer-sep { margin: 28px 0; border-top:1px solid rgba(107,90,74,0.08); }
 
 .footer-bottom { text-align:center; padding:18px 0 0; color:#6B5A4A; font-size:0.95rem; }
 
-/* Login page styles */
+
+/* LOGIN STRÁNKA / KARTA
+   - vertikálne centrovanie
+   - jemný tieň a zaoblenie */
+
 .login-page {
-    min-height: calc(100vh - 120px); /* minus header+footer approx */
+    min-height: calc(100vh - 120px); /* výška okna mínus hlavička + päta (odhad) */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 1rem;
-
+    padding: 2rem 1rem; /* priestor okolo na menších displejoch */
 }
 
 .login-container {
     width: 100%;
-    max-width: 420px;
+    max-width: 420px; /* pohodlná šírka formulára */
 }
 
 .login-card {
     background: #ffffff;
     border-radius: 1rem;
-    box-shadow: 0 18px 45px rgba(91, 70, 54, 0.18);
+    box-shadow: 0 18px 45px rgba(91, 70, 54, 0.18); /* mäkký tieň */
     padding: 2rem 1.75rem 1.75rem;
     border: 1px solid rgba(91, 70, 54, 0.06);
 }
 
+/* Hlavička karty: názov a podtitul */
 .login-card__header {
     margin-bottom: 1.5rem;
     text-align: center;
@@ -223,19 +241,14 @@ body {
     color: #8B735E;
 }
 
+/* Vnútro karty – zvislé rozostupy */
 .login-card__body {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
 }
 
-.login-card__footer {
-    margin-top: 1.25rem;
-    font-size: 0.9rem;
-    color: #6B5A4A;
-    text-align: center;
-}
-
+/* Odkazy (napr. „Zabudnuté heslo“, „Registrovať sa“) */
 .login-link {
     color: #D97706;
     font-weight: 500;
@@ -246,12 +259,14 @@ body {
     text-decoration: underline;
 }
 
+/* Formulár: zvislý layout s menšími medzerami medzi skupinami */
 .login-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
+/* Skupina label + input */
 .login-form__group {
     display: flex;
     flex-direction: column;
@@ -264,9 +279,10 @@ body {
     color: #5B4636;
 }
 
+/* Textové vstupy – jemné zvýraznenie pri focus, priateľské farby */
 .login-form__input {
     width: 100%;
-    padding: 0.65rem 0.1rem;
+    padding: 0.65rem 0.1rem; /* úzky horizontálny padding – počíta aj s vnor. kontajnerom */
     border-radius: 0.6rem;
     border: 1px solid #E5D5C4;
     background: #FFFCF8;
@@ -276,21 +292,23 @@ body {
 }
 
 .login-form__input::placeholder {
-    color: #B89D84;
+    color: #B89D84; /* menej výrazný placeholder */
 }
 
 .login-form__input:focus {
     outline: none;
     border-color: #D97706;
-    box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.18);
+    box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.18); /* jemný „focus ring“ pre prístupnosť */
     background-color: #FFFDF9;
 }
 
+/* Chybný stav vstupu: červené orámovanie + svetlé pozadie */
 .login-form__input--error {
     border-color: #DC2626;
     background-color: #FEF2F2;
 }
 
+/* Riadok s checkboxom „Zapamätať si ma“ */
 .login-form__checkbox-row {
     display: flex;
     align-items: center;
@@ -302,18 +320,20 @@ body {
 .login-form__checkbox {
     width: 16px;
     height: 16px;
-    accent-color: #D97706;
+    accent-color: #D97706; /* farba zaškrtnutia (podpora v moderných prehliadačoch) */
 }
 
 .login-form__checkbox-label {
-    cursor: pointer;
+    cursor: pointer; /* lepšia použiteľnosť */
 }
 
+/* Text chybovej hlášky pod poľom */
 .login-form__error-message {
     font-size: 0.82rem;
     color: #B91C1C;
 }
 
+/* Flash chybový banner nad formulárom (napr. zlá kombinácia email/heslo) */
 .login-flash-error {
     border-radius: 0.75rem;
     padding: 0.75rem 0.9rem;
@@ -327,13 +347,14 @@ body {
     margin: 0;
 }
 
+/* Tlačidlo Odoslať – medový prechod, zvýraznenie na hover/active */
 .login-submit-btn {
     width: 100%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 0.7rem 1.2rem;
-    border-radius: 999px;
+    border-radius: 999px; /* „pilulka“ */
     border: none;
     background: linear-gradient(135deg, #FBBF24, #D97706);
     color: #1F1309;
@@ -355,39 +376,48 @@ body {
 
 .login-submit-btn:disabled {
     opacity: 0.7;
-    cursor: not-allowed;
+    cursor: not-allowed; /* vizuálny náznak nedostupného stavu */
     box-shadow: none;
 }
 
+
+/* Telefóny a menšie mobily (≤ 640 px) */
 @media (max-width: 640px) {
     .login-card {
+        /* kompaktnejšie vnútorné odsadenie a jemnejšie rohy na malých displejoch */
         padding: 1.75rem 1.25rem 1.5rem;
         border-radius: 0.9rem;
     }
 
     .login-card__title {
+        /* o niečo menší nadpis, aby sa zmestil na jeden riadok */
         font-size: 1.4rem;
     }
 }
 
-/* Responsive adjustments */
+/* Tablety a menšie notebooky (≤ 1023 px) */
 @media (max-width: 1023px) {
-    /* slightly tighter for tablet */
+    /* jemne zúžené okraje a menšie medzery vo footeri */
     .footer-inner { padding: 40px 20px; }
+    /* 3 stĺpce s mierne upraveným pomerom šírky */
     .footer-grid { gap: 28px; grid-template-columns: 1fr 1fr 0.9fr; }
 }
 
+/* Od šírky 640 px vyššie (tablet+): jemné doladenie hlavičky */
 @media (min-width: 640px) {
-    .nav__links { margin-left: 0; } /* zruš auto margin na linkách */
-    .cart-icon { margin-left: auto; } /* košík pôjde úplne doprava */
+    /* odkazy už nepotrebujú auto-margin; zarovnanie rieši košík */
+    .nav__links { margin-left: 0; }
+    /* ikona košíka bude úplne vpravo */
+    .cart-icon { margin-left: auto; }
 }
 
+/* Užšie obrazovky (≤ 900 px): footer na jeden stĺpec a centrovanie obsahu */
 @media (max-width: 900px) {
-    /* stack into single column on narrower screens */
     .footer-inner { padding: 32px 16px; }
+    /* rozpad do jedného stĺpca + menšie medzery */
     .footer-grid { grid-template-columns: 1fr; gap: 18px; }
 
-    /* center brand and social for small screens */
+    /* centrovanie značky, textov a sociálnych ikon pre lepšiu čitateľnosť */
     .brand { justify-content: center; }
     .desc { max-width: none; text-align: center; }
     .contact-list { align-items: center; text-align: center; }
@@ -396,16 +426,19 @@ body {
     .social-icons { justify-content: center; }
 }
 
+/* Veľmi úzke displeje (≤ 480 px): ešte kompaktnejšie okraje a menšie logo */
 @media (max-width: 480px) {
     .footer-inner { padding: 22px 12px; }
     .brand svg { width:44px; height:44px; }
     .brand-name { font-size:1rem; }
+    /* drobné vnútorné odsadenie hlavičky a päty, aby sa zmestil obsah */
     .nav, .site-footer { padding-left: 8px; padding-right: 8px; }
 }
 
-/* Responsive nav: burger toggle, overlay/drawer and breakpoints */
 
-/* Burger toggle (hidden on desktop) */
+/* RESPONZÍVNA NAVIGÁCIA: BURGER + OVERLAY */
+
+/* Prepínač (burger) – skrytý na desktope, zobrazuje sa len na mobile */
 .nav__toggle {
     display: none;
     align-items: center;
@@ -419,6 +452,7 @@ body {
     margin-left: auto;
 }
 
+/* Vizuál burger ikonky (3 prúžky) */
 .nav__burger {
     display: block;
     width: 22px;
@@ -440,9 +474,9 @@ body {
 .nav__burger::before { top: -7px; }
 .nav__burger::after  { top: 7px; }
 
-/* Mobile overlay/drawer - full width from below the header */
+/* Základný stav menu (desktop/tablet) – statické, bez overlay efektu */
 .nav__menu {
-    position: static; /* default for larger screens; mobile rules override */
+    position: static;   /* na väčších šírkach je menu súčasťou layoutu */
     transform: none;
     opacity: 1;
     height: auto;
@@ -453,32 +487,33 @@ body {
     padding-bottom: 0;
 }
 
-/* Default: hide close button (only show on mobile overlay open) */
+/* Tlačidlo Zavrieť (X) – predvolene skryté, zobrazuje sa len pri otvorenom mobile menu */
 .nav__close { display: none; }
 
-/* mobile-only helper: hide by default */
+/* Pomocná trieda – položky určené len pre mobil */
 .mobile-only { display: none !important; }
 
+/* Mobilné telefóny (< 640 px): zapíname overlay/drawer správanie */
 @media (max-width: 639px) {
-    /* show toggle */
+    /* zobraz burger tlačidlo v hlavičke */
     .nav__toggle { display: inline-flex; }
 
-    /* hide inline header links if present outside menu */
+    /* skry linky, ak by boli vložené priamo v hlavičke mimo .nav__menu */
     .nav .container > .nav__links { display: none; }
 
-    /* overlay/drawer styles for mobile */
+    /* Overlay/drawer: posúva sa zhora pod hlavičku a zaberie plnú šírku */
     .nav__menu {
         position: fixed;
-        top: var(--nav-top, 64px);
+        top: var(--nav-top, 64px);  /* výška hlavičky – dá sa nastaviť JS */
         left: 0;
         right: 0;
-        transform: translateY(-100%);
+        transform: translateY(-100%);  /* začiatok mimo obrazovku */
         opacity: 0;
         height: 0;
         overflow: auto;
         background: #fff;
         transition: transform .28s ease, opacity .28s ease;
-        z-index: 110; /* below the header which has higher z-index */
+        z-index: 110; /* pod hlavičkou (tá má vyšší z-index) */
         display: flex;
         flex-direction: column;
         box-shadow: 0 8px 24px rgba(0,0,0,0.06);
@@ -486,13 +521,14 @@ body {
         box-sizing: border-box;
     }
 
+    /* Otvorený stav – menu klesne pod hlavičku a vyplní zvyšok výšky */
     .nav__menu.open {
         transform: translateY(0);
         opacity: 1;
         height: calc(100vh - var(--nav-top, 64px));
     }
 
-    /* close button hidden by default but shown when menu open */
+    /* Tlačidlo Zavrieť – zobraz iba pri otvorenom menu */
     .nav__close { display: none; }
     .nav__menu.open .nav__close { display: inline-flex; }
 
@@ -513,43 +549,52 @@ body {
         box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
 
-    /* ensure the first link isn't hidden under the close button when open */
+    /* Rezerva nad prvou položkou, aby ju neprekrývalo tlačidlo zavrieť */
     .nav__menu.open .nav__links { padding-top: calc(var(--nav-top, 64px) + 8px); }
 
-    /* make links stack nicely */
+    /* Zoznam odkazov v stĺpci, pohodlné „tap“ zóny */
     .nav__menu .nav__links { display:flex; flex-direction:column; gap:0; padding:1rem; margin:0; }
     .nav__menu .nav__link { padding: 1rem 0.75rem; border-radius: 0.375rem; font-size: 1.05rem; }
 
-    /* show mobile-only items only when menu is open */
+    /* Položky určené len pre mobil sa ukážu až po otvorení menu */
     .nav__menu.open .mobile-only { display: inline-flex !important; }
 }
 
-/* Ensure close button and overlay visuals are disabled on tablet+ and desktop */
+/* Tablet a desktop (≥ 640 px): vypneme overlay správanie aj X tlačidlo */
 @media (min-width: 640px) {
     .nav__close { display: none !important; border: 0 !important; box-shadow: none !important; }
-    .nav__menu { position: static !important; transform: none !important; opacity: 1 !important; height: auto !important; overflow: visible !important; background: transparent !important; box-shadow: none !important; padding: 0 !important; }
+    .nav__menu {
+        position: static !important;
+        transform: none !important;
+        opacity: 1 !important;
+        height: auto !important;
+        overflow: visible !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
 }
 
 
-
-/* Extra forceful desktop/tablet overrides to remove the floating white box and X frame */
+/*DODATOČNÉ „TVRDÉ“ PREPÍSANIE NA DESKTOP/TABLET
+   (odstráni biely box a rám X, ak by pretrvával) */
 @media (min-width: 640px) {
-  /* target the menu when rendered inside the header container */
-  .nav > .container > .nav__menu,
-  .nav .nav__menu,
-  .nav__menu {
-    background: transparent !important;
-    box-shadow: none !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
-    position: static !important;
-    transform: none !important;
-    opacity: 1 !important;
-    height: auto !important;
-  }
+    /* istota, že menu je plne „inline“ v hlavičke bez overlay vizuálov */
+    .nav > .container > .nav__menu,
+    .nav .nav__menu,
+    .nav__menu {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        position: static !important;
+        transform: none !important;
+        opacity: 1 !important;
+        height: auto !important;
+    }
 
-  /* ensure the close button is hidden on larger screens */
-  .nav__close { display: none !important; }
+    /* X tlačidlo definitívne skryté na väčších obrazovkách */
+    .nav__close { display: none !important; }
 }

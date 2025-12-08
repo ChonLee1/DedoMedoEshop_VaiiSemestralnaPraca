@@ -23,7 +23,7 @@ class AuthController
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin/dashboard');
         }
 
         return back()->withErrors([
