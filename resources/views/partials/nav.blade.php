@@ -14,7 +14,7 @@
             <ul class="nav__links">
                 <li><a href="{{ route('home') }}" class="nav__link {{ request()->routeIs('home') ? 'active' : '' }}">Domov</a></li>
                 <li><a href="{{ route('products.index') }}" class="nav__link {{ request()->routeIs('products.*') ? 'active' : '' }}">Produkty</a></li>
-                <li><a href="#" class="nav__link">Zber</a></li>
+                <li><a href="{{ route('harvests.index') }}" class="nav__link {{ request()->routeIs('harvests.*') ? 'active' : '' }}">Zbierky</a></li>
                 <li><a href="#" class="nav__link">Kontakt</a></li>
             </ul>
         </div>
