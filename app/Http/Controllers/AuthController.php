@@ -9,7 +9,7 @@ class AuthController
 {
     public function showLoginForm()
     {
-        return view('login');
+        return view('admin-login');
     }
 
     public function login(Request $request)
@@ -19,15 +19,20 @@ class AuthController
             'password' => ['required'],
         ]);
 
-        $remember = $request->boolean('remember');
-
-        if (Auth::attempt($credentials, $remember)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('admin/dashboard');
+
+            // Ak je admin, presmeruj na admin dashboard
+            if (auth()->user()->is_admin()) {
+                return redirect()->route('admin.dashboard');
+            }
+
+            // Inak na home
+            return redirect()->route('home');
         }
 
         return back()->withErrors([
-            'email' => 'Nespravne prihlasovacie údaje.',
+            'email' => 'Nesprávne prihlasovacie údaje.',
         ])->onlyInput('email');
     }
 
