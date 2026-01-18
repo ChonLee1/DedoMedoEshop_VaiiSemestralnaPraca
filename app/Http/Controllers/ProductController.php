@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-
     /**
-     * ADMIN: Zoznam produktov (zjednodušený)
+     * ADMIN: Zoznam produktov
      */
     public function adminIndex()
     {
         $products = Product::with('category')->get();
         $categories = Category::where('is_active', true)->get();
+
         return view('admin-products', compact('products', 'categories'));
     }
 
@@ -25,17 +28,8 @@ class ProductController extends Controller
     public function toggleActive(Product $product)
     {
         $product->update(['is_active' => !$product->is_active]);
-        return back()->with('success', 'Stav produktu bol zmenený');
-    }
 
-    /**
-     * ADMIN: Rýchla aktualizácia skladu
-     */
-    public function quickUpdate(Request $request, Product $product)
-    {
-        $request->validate(['stock' => 'required|integer|min:0']);
-        $product->update(['stock' => $request->stock]);
-        return back()->with('success', 'Sklad bol aktualizovaný');
+        return back()->with('success', 'Stav produktu bol zmenený');
     }
 
     /**
@@ -43,20 +37,53 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price_cents' => 'required|integer|min:0',
-            'category_id' => 'required|exists:categories,id',
-            'stock' => 'required|integer|min:0',
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'price_cents' => ['required', 'integer', 'min:0'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'stock' => ['required', 'integer', 'min:0'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        // Vytvor slug z názvu
-        $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
-        $validated['is_active'] = true;
+        if ($request->hasFile('image')) {
+            $data['image_path'] = $request->file('image')->store('products', 'public');
+        }
 
-        Product::create($validated);
+        $data['slug'] = Str::slug($data['name']);
+        $data['is_active'] = true;
+
+        Product::create($data);
 
         return back()->with('success', 'Produkt bol úspešne vytvorený!');
+    }
+
+    /**
+     * ADMIN: Update produktu (podporí aj upload obrázka, aj čiastočný update)
+     *
+     * DÔLEŽITÉ: Pravidlá validácie "sometimes" umožňujú, aby mini formuláre
+     * posielali len čiastočné údaje (len image alebo len stock).
+     */
+    public function update(Request $request, Product $product)
+    {
+        // validuj len to, čo reálne posielaš z mini formulárov
+        $data = $request->validate([
+            'stock' => ['sometimes', 'integer', 'min:0'],
+            'image' => ['sometimes', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ]);
+
+
+        if ($request->hasFile('image')) {
+            if ($product->image_path) {
+                Storage::disk('public')->delete($product->image_path);
+            }
+            $data['image_path'] = $request->file('image')->store('products', 'public');
+        }
+
+        unset($data['image']);
+
+        $product->update($data);
+
+        return back()->with('success', 'Produkt bol upravený.');
     }
 }

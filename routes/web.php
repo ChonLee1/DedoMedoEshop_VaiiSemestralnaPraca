@@ -74,7 +74,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/products', [ProductController::class, 'adminIndex'])->name('admin.products');
     Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
     Route::post('/products/{product}/toggle', [ProductController::class, 'toggleActive'])->name('admin.products.toggle');
-    Route::post('/products/{product}/update', [ProductController::class, 'quickUpdate'])->name('admin.products.update');
+    Route::post('/products/{product}/update', [ProductController::class, 'update'])->name('admin.products.update');
 
     // Správa kategórií
     Route::get('/categories', [CategoryController::class, 'adminIndex'])->name('admin.categories');

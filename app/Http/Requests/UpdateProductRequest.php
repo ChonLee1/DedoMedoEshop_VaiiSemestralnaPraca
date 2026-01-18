@@ -7,19 +7,11 @@ use Illuminate\Validation\Rule;
 
 class UpdateProductRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
@@ -30,14 +22,14 @@ class UpdateProductRequest extends FormRequest
             'stock'             => ['required', 'integer', 'min:0'],
             'category_id'       => ['required', 'exists:categories,id'],
             'harvest_batch_id'  => ['nullable', 'exists:harvest_batches,id'],
-            'image_path'        => ['nullable', 'string', 'max:255'],
+
+            // ✅ upload obrázka (toto posiela form cez name="image")
+            'image'             => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+
             'is_active'         => ['boolean'],
         ];
     }
 
-    /**
-     * Vrátť prispôsobené správy validácie
-     */
     public function messages(): array
     {
         return [
@@ -48,7 +40,11 @@ class UpdateProductRequest extends FormRequest
             'price_cents.min'       => 'Cena musí byť najmenej 0',
             'category_id.required'  => 'Kategória je povinná',
             'category_id.exists'    => 'Zvolená kategória neexistuje',
+
+            // ✅ správy pre obrázok
+            'image.image'           => 'Súbor musí byť obrázok',
+            'image.mimes'           => 'Obrázok musí byť vo formáte JPG, PNG alebo WebP',
+            'image.max'             => 'Obrázok môže mať max 2MB',
         ];
     }
 }
-

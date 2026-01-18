@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController
 {
-    /**
-     * GET /api/products
-     * Vrať všetky aktívne produkty ako JSON
-     */
     public function index()
     {
         $products = Product::where('is_active', true)
@@ -26,6 +23,10 @@ class ProductController
                     'stock' => $product->stock,
                     'is_active' => $product->is_active,
                     'category' => $product->category?->name ?? 'Bez kategórie',
+
+                    // ✅ obrázok
+                    'image_path' => $product->image_path,
+                    'image_url' => $product->image_path ? Storage::url($product->image_path) : null,
                 ];
             });
 
@@ -35,25 +36,19 @@ class ProductController
         ]);
     }
 
-    /**
-     * GET /api/products/filter?category_id=1&search=med
-     * Filtruj produkty a vrať ako JSON
-     */
     public function filter(Request $request)
     {
         $query = Product::where('is_active', true)->with('category');
 
-        // Filter podľa kategórie
         if ($request->has('category_id') && $request->category_id !== '') {
             $query->where('category_id', $request->category_id);
         }
 
-        // Filter podľa vyhľadávania
         if ($request->has('search') && $request->search !== '') {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%$search%")
-                  ->orWhere('description', 'like', "%$search%");
+                    ->orWhere('description', 'like', "%$search%");
             });
         }
 
@@ -67,6 +62,10 @@ class ProductController
                 'stock' => $product->stock,
                 'is_active' => $product->is_active,
                 'category' => $product->category?->name ?? 'Bez kategórie',
+
+                // ✅ obrázok
+                'image_path' => $product->image_path,
+                'image_url' => $product->image_path ? Storage::url($product->image_path) : null,
             ];
         });
 
@@ -76,4 +75,3 @@ class ProductController
         ]);
     }
 }
-
