@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title','Domov - DedoMedo e-shop')
 @section('content')
+
     {{-- HERO SEKCIA --}}
     <section class="hero">
         <div class="hero__content">
@@ -69,7 +70,17 @@
                                 <span class="badge bg-danger">Vypredané</span>
                             @endif
                         </div>
-                        <button class="btn btn--primary btn--sm" @disabled($product->stock <= 0)>
+                        <button
+                            type="button"
+                            class="btn btn--primary btn--sm"
+                            @disabled($product->stock <= 0)
+                            onclick="window.cart && window.cart.addItem(
+                                {{ (int) $product->id }},
+                                @js($product->name),
+                                {{ (int) $product->price_cents }} / 100,
+                                1
+                            )"
+                        >
                             Pridať do košíka
                         </button>
                     </div>
@@ -123,3 +134,8 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/cart.js') }}" defer></script>
+@endpush
+
