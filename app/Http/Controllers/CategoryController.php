@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-
-
-// môžeš aj \App\Models\Category priamo v type
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -30,7 +28,6 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         $data['is_active'] = (bool)($request->has('is_active') ?? false);
-        // sem pôjde: $data = $request->validated(); Category::create($data); ...
 
         Category::create($data);
 
@@ -63,5 +60,39 @@ class CategoryController extends Controller
 
         return redirect()->route('categories.index')
             ->with('success', 'Category deleted');
+    }
+
+    /**
+     * ADMIN: Zoznam kategórií (zjednodušený)
+     */
+    public function adminIndex()
+    {
+        $categories = Category::withCount('products')->get();
+        return view('admin-categories', compact('categories'));
+    }
+
+    /**
+     * ADMIN: Toggle aktívnosť kategórie
+     */
+    public function toggleActive(Category $category)
+    {
+        $category->update(['is_active' => !$category->is_active]);
+        return back()->with('success', 'Stav kategórie bol zmenený');
+    }
+
+    /**
+     * ADMIN: Rýchle vytvorenie kategórie
+     */
+    public function quickCreate(Request $request)
+    {
+        $request->validate(['name' => 'required|string|max:255|unique:categories']);
+
+        Category::create([
+            'name' => $request->name,
+            'slug' => str()->slug($request->name),
+            'is_active' => true,
+        ]);
+
+        return back()->with('success', 'Kategória bola vytvorená');
     }
 }
