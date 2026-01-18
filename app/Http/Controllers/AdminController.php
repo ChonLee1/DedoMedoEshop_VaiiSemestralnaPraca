@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\User;
+use Illuminate\Support\Collection;
+
+class AdminController extends Controller
+{
+    /**
+     * GET /admin/dashboard
+     * Admin dashboard s štatistikami
+     */
+    public function dashboard()
+    {
+        // Základné štatistiky
+        $totalProducts = 0;
+        $activeProducts = 0;
+        $totalCategories = 0;
+        $totalOrders = 0;
+        $totalRevenue = 0;
+
+        try {
+            $totalProducts = Product::count();
+            $activeProducts = Product::where('is_active', true)->count();
+            $totalCategories = Category::count();
+            $totalOrders = Order::count();
+
+            if ($totalOrders > 0) {
+                $totalRevenue = (Order::sum('total_cents') ?? 0) / 100;
+            }
+        } catch (\Exception $e) {
+            // Ticho fallback ak je chyba
+            \Log::error('Admin Dashboard Error: ' . $e->getMessage());
+        }
+
+        return view('admin-dashboard', compact(
+            'totalProducts',
+            'activeProducts',
+            'totalCategories',
+            'totalOrders',
+            'totalRevenue'
+        ));
+    }
+}
