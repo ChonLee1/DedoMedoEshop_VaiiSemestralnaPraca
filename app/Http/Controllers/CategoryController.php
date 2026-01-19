@@ -31,8 +31,8 @@ class CategoryController extends Controller
 
         Category::create($data);
 
-        return redirect()->route('categories.index')
-            ->with('succes', 'Cateogry created');
+        return redirect()->route('admin.categories')
+            ->with('success', 'Category created');
     }
 
     // GET /admin/categories/{category}/edit
@@ -49,7 +49,7 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return redirect()->route('categories.index')
+        return redirect()->route('admin.categories')
             ->with('success', 'Category updated');
     }
 
@@ -58,7 +58,7 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('categories.index')
+        return redirect()->route('admin.categories')
             ->with('success', 'Category deleted');
     }
 

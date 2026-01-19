@@ -16,19 +16,21 @@
     {{-- Formulár na pridanie novej kategórie --}}
     <div style="background: #f0f7ff; border: 2px solid #2196f3; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
         <h3 style="margin-top: 0;">➕ Pridať novú kategóriu</h3>
-        <form method="POST" action="{{ route('admin.categories.create') }}" style="display: flex; gap: 1rem; align-items: flex-end;">
+        <form method="POST" action="{{ route('admin.categories.create') }}" style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start;">
             @csrf
-            <div style="flex: 1;">
+            <div>
                 <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Názov kategórie:</label>
                 <input type="text" id="name" name="name" required
-                       style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+                       style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; box-sizing: border-box;">
                 @error('name')
-                    <small style="color: #d32f2f;">{{ $message }}</small>
+                    <small style="color: #d32f2f; display: block; margin-top: 0.25rem;">{{ $message }}</small>
                 @enderror
             </div>
-            <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">
-                ✓ Vytvoriť
-            </button>
+            <div style="padding-top: 1.6rem;">
+                <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem; white-space: nowrap;">
+                    ✓ Vytvoriť
+                </button>
+            </div>
         </form>
     </div>
 
@@ -42,6 +44,7 @@
                     <th style="padding: 1rem; text-align: center;">Počet produktov</th>
                     <th style="padding: 1rem; text-align: center;">Aktívna</th>
                     <th style="padding: 1rem; text-align: center;">Vytvorená</th>
+                    <th style="padding: 1rem; text-align: center;">Akcie</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,10 +72,19 @@
                         <td style="padding: 1rem; text-align: center; color: #666; font-size: 0.9rem;">
                             {{ $category->created_at->format('d.m.Y') }}
                         </td>
+                        <td style="padding: 1rem; text-align: center;">
+                            <form method="POST" action="{{ route('admin.categories.destroy', $category) }}" style="display: inline;" onsubmit="return confirm('Naozaj chceš zmazať túto kategóriu?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    🗑️ Zmazať
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" style="padding: 2rem; text-align: center; color: #999;">
+                        <td colspan="6" style="padding: 2rem; text-align: center; color: #999;">
                             Žiadne kategórie
                         </td>
                     </tr>
