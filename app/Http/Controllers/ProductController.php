@@ -68,7 +68,10 @@ class ProductController extends Controller
     {
         // validuj len to, čo reálne posielaš z mini formulárov
         $data = $request->validate([
+            'name' => ['sometimes', 'string', 'max:255'],
+            'price_cents' => ['sometimes', 'integer', 'min:0'],
             'stock' => ['sometimes', 'integer', 'min:0'],
+            'category_id' => ['sometimes', 'nullable', 'exists:categories,id'],
             'image' => ['sometimes', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
@@ -85,5 +88,26 @@ class ProductController extends Controller
         $product->update($data);
 
         return back()->with('success', 'Produkt bol upravený.');
+    }
+
+    /**
+     * ADMIN: Zmazanie produktu
+     */
+    public function destroy(Product $product)
+    {
+        $imagePath = $product->image_path;
+
+        $product->delete();
+
+        // Maz obrázok iba ak ho nepoužíva žiadny iný produkt
+        if ($imagePath) {
+            $otherProductsWithImage = Product::where('image_path', $imagePath)->count();
+
+            if ($otherProductsWithImage === 0 && file_exists(storage_path('app/public/' . $imagePath))) {
+                Storage::disk('public')->delete($imagePath);
+            }
+        }
+
+        return back()->with('success', 'Produkt bol zmazaný.');
     }
 }
