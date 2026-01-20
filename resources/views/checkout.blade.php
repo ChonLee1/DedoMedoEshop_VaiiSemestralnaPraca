@@ -4,6 +4,23 @@
     <div class="container" style="margin: 3rem auto; max-width: 1200px;">
         <h1 style="margin-bottom: 2rem;">🛒 Pokladňa</h1>
 
+        @if (session('success'))
+            <div style="background: #efe; border: 1px solid #cfc; color: #060; padding: 1rem; border-radius: 4px; margin-bottom: 2rem;">
+                ✅ {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('order'))
+            <div style="text-align: center; margin-bottom: 3rem; padding: 2rem; background: #f0f8ff; border-radius: 8px;">
+                <h2 style="color: #2ecc71; margin-bottom: 1rem;">🎉 Objednávka potvrdená!</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 1.5rem;">Kód Vašej objednávky: <strong style="color: #d4a574;">{{ session('order')->code }}</strong></p>
+                <p style="color: #666; margin-bottom: 2rem;">Na vašu emailovú adresu sme poslali potvrdzujúcu správu.</p>
+                <a href="{{ route('products.index') }}" class="btn btn-primary" style="padding: 0.75rem 1.5rem; text-decoration: none; color: white; background: #d4a574; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                    ← Pokračovať v nákupe
+                </a>
+            </div>
+        @endif
+
         @if ($errors->any())
             <div style="background: #fee; border: 1px solid #fcc; color: #c00; padding: 1rem; border-radius: 4px; margin-bottom: 2rem;">
                 <h4>Chyba pri odslaní objednávky</h4>
@@ -15,13 +32,7 @@
             </div>
         @endif
 
-        @if (session('success'))
-            <div style="background: #efe; border: 1px solid #cfc; color: #060; padding: 1rem; border-radius: 4px; margin-bottom: 2rem;">
-                ✅ {{ session('success') }}
-            </div>
-        @endif
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        @if (!session('order'))
             {{-- KOŠÍK --}}
             <div>
                 <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 8px;">
@@ -99,19 +110,6 @@
                         </div>
 
                         <div style="margin-bottom: 1.5rem;">
-                            <label for="address" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Adresa *</label>
-                            <textarea
-                                id="address"
-                                name="address"
-                                required
-                                rows="3"
-                                style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; box-sizing: border-box; font-family: inherit;"
-                                placeholder="Ulica, mestnosť, PSČ"
-                            >{{ old('address') }}</textarea>
-                            @error('address')
-                                <span style="color: #c00; font-size: 0.9rem;">{{ $message }}</span>
-                            @enderror
-                        </div>
 
                         {{-- Skrytý field pre cart items --}}
                         <input type="hidden" id="cart_items" name="cart_items" value="">
@@ -127,6 +125,7 @@
         <div style="margin-top: 2rem;">
             <a href="{{ route('products.index') }}" class="btn btn-outline-primary">← Pokračovať v nákupe</a>
         </div>
+        @endif
     </div>
 
     <script>

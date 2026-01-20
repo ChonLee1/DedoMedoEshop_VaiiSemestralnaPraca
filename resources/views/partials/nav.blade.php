@@ -14,11 +14,15 @@
             <ul class="nav__links">
                 <li><a href="{{ route('home') }}" class="nav__link {{ request()->routeIs('home') ? 'active' : '' }}">Domov</a></li>
                 <li><a href="{{ route('products.index') }}" class="nav__link {{ request()->routeIs('products.*') ? 'active' : '' }}">Produkty</a></li>
-                <li><a href="{{ route('harvests.index') }}" class="nav__link {{ request()->routeIs('harvests.*') ? 'active' : '' }}">Zbierky</a></li>
-                <li><a href="#" class="nav__link">Kontakt</a></li>
+                <li><a href="{{ route('contact.index') }}" class="nav__link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Kontakt</a></li>
             </ul>
         </div>
-        <a href="{{ route('login') }}" class="nav__link {{ request()->routeIs('login') ? 'active' : '' }}">Login</a>
-        <a href="#" class="cart-icon" aria-label="Open cart">🛒</a>
+
+
+        {{-- Cart icon with dynamic count; links to cart page --}}
+        <a href="{{ route('cart.show') }}" class="cart-icon" aria-label="Open cart" title="Košík">
+            🛒
+            <span class="cart-count" style="margin-left: 4px; font-weight: 600;">0</span>
+        </a>
     </div>
 </nav>
