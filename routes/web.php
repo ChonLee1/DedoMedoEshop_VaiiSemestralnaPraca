@@ -21,6 +21,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // 2. PRODUKTY - Zoznam
 Route::get('/products', function () {
     return view('products.index', [
+        'products' => \App\Models\Product::where('is_active', true)->with('category')->get(),
         'categories' => \App\Models\Category::where('is_active', true)->get()
     ]);
 })->name('products.index');
@@ -75,10 +76,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
     Route::post('/products/{product}/toggle', [ProductController::class, 'toggleActive'])->name('admin.products.toggle');
     Route::post('/products/{product}/update', [ProductController::class, 'update'])->name('admin.products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
     // Správa kategórií
     Route::get('/categories', [CategoryController::class, 'adminIndex'])->name('admin.categories');
     Route::post('/categories/{category}/toggle', [CategoryController::class, 'toggleActive'])->name('admin.categories.toggle');
     Route::post('/categories/create', [CategoryController::class, 'quickCreate'])->name('admin.categories.create');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 });
 
