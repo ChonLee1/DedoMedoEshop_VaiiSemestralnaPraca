@@ -1,4 +1,3 @@
-{{--Pomoc S AI--}}
 @extends('layouts.app')
 @section('title','Pokladňa - DedoMedo e-shop')
 @section('content')
@@ -11,6 +10,7 @@
             </div>
         @endif
 
+        {{-- po uspesnej objednavke sa zobrazi potvrdenie a vyprazdni localStorage --}}
         @if (session('order'))
             <div style="text-align: center; margin-bottom: 3rem; padding: 2rem; background: #f0f8ff; border-radius: 8px;">
                 <h2 style="color: #2ecc71; margin-bottom: 1rem;">🎉 Objednávka potvrdená!</h2>
@@ -21,7 +21,7 @@
                 </a>
             </div>
 
-            <!-- Po úspešnej objednávke vyprázdni košík (localStorage) a aktualizuj UI -->
+            {{-- po uspechu musime vyprazdnit localStorage aby sa kosik neobjavil znova --}}
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     try {
@@ -129,7 +129,7 @@
 
                         <div style="margin-bottom: 1.5rem;">
 
-                        {{-- Skrytý field pre cart items --}}
+                        {{-- sem sa vlozi JSON kosika pred odoslanim (vid script nizsie) --}}
                         <input type="hidden" id="cart_items" name="cart_items" value="">
 
                         <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 1rem; cursor: pointer;">
@@ -146,17 +146,20 @@
         @endif
     </div>
 
+    {{-- pred submitom exportuje kosik z localStorage do hidden inputu --}}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.querySelector('form');
             if (!form) return;
 
+            // pred odoslanim skontroluj ci nieco je v kosiku
             form.addEventListener('submit', function(e) {
                 if (!window.cart || window.cart.getItemCount() === 0) {
                     e.preventDefault();
                     alert('Košík je prázdny! Pridaj produkty pred objednávkou.');
                     return false;
                 }
+                // vloz JSON do hidden inputu - OrderController to potom parsuje
                 const hidden = document.getElementById('cart_items');
                 if (hidden) hidden.value = window.cart.exportForCheckout();
             });

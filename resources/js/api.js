@@ -1,15 +1,10 @@
-/**
- * API Helper - AJAX volania na backend
- */
-
+// AJAX helper pre volania na /api endpointy
 class APIClient {
     constructor(baseUrl = '/api') {
         this.baseUrl = baseUrl;
     }
 
-    /**
-     * Filtruj produkty podľa kategórie a hľadaného textu
-     */
+    // GET /api/products/filter?category_id=X&search=Y
     async filterProducts(categoryId = null, searchTerm = null) {
         const params = new URLSearchParams();
         if (categoryId) params.append('category_id', categoryId);
@@ -17,24 +12,18 @@ class APIClient {
 
         try {
             const url = `${this.baseUrl}/products/filter?${params}`;
-            console.log('Fetching:', url);
             const response = await fetch(url, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json' }
             });
-            const data = await response.json();
-            console.log('API Response:', data);
-            return data;
+            return await response.json();
         } catch (error) {
             console.error('API Error:', error);
             return { success: false, error: error.message };
         }
     }
 
-    /**
-     * GET /api/products
-     * Načítaj všetky produkty
-     */
+    // GET /api/products - vsetky produkty
     async getProducts() {
         try {
             const response = await fetch(`${this.baseUrl}/products`, {
@@ -48,10 +37,7 @@ class APIClient {
         }
     }
 
-    /**
-     * POST /api/cart/add
-     * Pridaj produkt do košíka
-     */
+    // POST /api/cart/add - nepouziva sa (kosik je v localStorage)
     async addToCart(productId, qty = 1) {
         try {
             const response = await fetch(`${this.baseUrl}/cart/add`, {
@@ -74,21 +60,26 @@ class APIClient {
     }
 }
 
+// globalna instancia
 window.api = new APIClient('/api');
 
-// ==================== PRODUCT FILTER ====================
+// FILTER PRODUKTOV na stranke /products
 function initProductFilter() {
+    // elementy z products/index.blade.php
     const categorySelect = document.getElementById('category-filter');
     const searchInput = document.getElementById('search-filter');
     const productsContainer = document.getElementById('products-list');
     const noResultsMsg = document.getElementById('no-results');
 
+    // ak nie su filtre na stranke, skonci
     if (!categorySelect && !searchInput) return;
 
+    // zmena kategorie -> hned filtruj
     if (categorySelect) {
         categorySelect.addEventListener('change', () => filterAndDisplay());
     }
 
+    // input hladania -> debounce 300ms (aby sa necakalo na kazde pismeno)
     if (searchInput) {
         let debounceTimer;
         searchInput.addEventListener('input', () => {
@@ -97,10 +88,12 @@ function initProductFilter() {
         });
     }
 
+    // zavola API a renderuje produkty
     async function filterAndDisplay() {
         const categoryId = categorySelect?.value || null;
         const searchTerm = searchInput?.value || null;
 
+        // loading state
         if (productsContainer) {
             productsContainer.innerHTML = '<p class="text-muted">Načítavam...</p>';
         }
@@ -124,6 +117,7 @@ function initProductFilter() {
             return;
         }
 
+        // renderuj produktove karty
         if (productsContainer) {
             productsContainer.innerHTML = products.map(product => `
                 <div class="product-card">
@@ -154,6 +148,7 @@ function initProductFilter() {
                 </div>
             `).join('');
 
+            // pripoj click handlery na tlacidla kosika
             document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
                 btn.addEventListener('click', handleAddToCart);
             });
@@ -162,22 +157,28 @@ function initProductFilter() {
         if (noResultsMsg) noResultsMsg.style.display = 'none';
     }
 
+    // spusti filter hned pri nacitani stranky
     filterAndDisplay();
 }
 
+// handler pre tlacidlo "pridat do kosika" na produktovej karte
 async function handleAddToCart(event) {
     const btn = event.target;
     const productCard = btn.closest('.product-card');
     const productId = btn.dataset.productId;
+
+    // vytiahni nazov a cenu z renderovanej karty
     const productName = productCard?.querySelector('h3')?.textContent || 'Produkt';
     const priceText = productCard?.querySelector('.price')?.textContent || '0 €';
     const price = parseFloat(priceText.replace('€', '').replace(',', '.'));
 
+    // disable button pocas pridavania
     btn.disabled = true;
     const originalText = btn.textContent;
     btn.textContent = 'Pridávam...';
 
     try {
+        // pouziva globalny cart objekt z cart.js
         if (typeof cart !== 'undefined') {
             cart.addItem(productId, productName, price, 1);
             btn.textContent = '✅ Pridané!';
@@ -188,6 +189,7 @@ async function handleAddToCart(event) {
             return;
         }
 
+        // po 2s vrat povodny text
         setTimeout(() => {
             btn.textContent = originalText;
             btn.disabled = false;
@@ -200,15 +202,7 @@ async function handleAddToCart(event) {
     }
 }
 
-function updateCartCount() {
-    const cartCount = document.querySelector('.cart-count');
-    if (cartCount) {
-        const currentCount = parseInt(cartCount.textContent) || 0;
-        cartCount.textContent = currentCount + 1;
-    }
-}
-
-
+// spusti filter ked je DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     initProductFilter();
 });

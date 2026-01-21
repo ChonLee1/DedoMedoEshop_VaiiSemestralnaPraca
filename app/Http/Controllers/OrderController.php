@@ -26,27 +26,32 @@ class OrderController extends Controller
         return view('checkout');
     }
 
+    // spracuje objednavku z checkout formulara
+    // cart_items prichadza ako JSON string z localStorage (vid checkout.blade.php)
     public function store(Request $request)
     {
         $validated = $request->validate([
             'customer_name' => 'required|string|max:255',
             'email' => 'required|email',
             'phone' => 'required|string|max:20',
-            'cart_items' => 'required|json',
+            'cart_items' => 'required|json',  // JSON z cart.exportForCheckout()
         ]);
 
         try {
+            // parsuj JSON kosika z frontendu
             $cartItems = json_decode($validated['cart_items'], true);
 
             if (empty($cartItems)) {
                 return back()->withErrors(['cart' => 'Košík je prázdny']);
             }
 
+            // spocitaj celkovu sumu (ceny su v EUR, ukladame v centoch)
             $totalCents = 0;
             foreach ($cartItems as $item) {
                 $totalCents += $item['price'] * $item['quantity'] * 100;
             }
 
+            // vytvor hlavnu objednavku
             $order = Order::create([
                 'code' => 'ORD-' . time() . '-' . rand(1000, 9999),
                 'status' => 'pending',
@@ -56,6 +61,7 @@ class OrderController extends Controller
                 'phone' => $validated['phone'],
             ]);
 
+            // vytvor polozky objednavky a zniz sklad
             foreach ($cartItems as $item) {
                 $product = Product::findOrFail($item['id']);
 
@@ -66,9 +72,11 @@ class OrderController extends Controller
                     'unit_price_cents' => (int) ($item['price'] * 100),
                 ]);
 
+                // odcitaj zo skladu
                 $product->decrement('stock', $item['quantity']);
             }
 
+            // po uspesnom ulozeni sa v checkout.blade.php vyprazdni localStorage
             return redirect()->back()
                 ->with('success', 'Objednávka bola úspešne vytvorená! Kód: ' . $order->code)
                 ->with('order', $order);

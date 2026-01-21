@@ -1,23 +1,27 @@
+// kosik - uklada sa do localStorage, prezije reload stranky
 class ShoppingCart {
     constructor() {
-        this.storageKey = 'dedomedo_cart';
+        this.storageKey = 'dedomedo_cart';  // kluc v localStorage
         this.cart = this.loadCart();
         this.updateCartUI();
     }
 
+    // nacita kosik z localStorage alebo vrati prazdne pole
     loadCart() {
         const stored = localStorage.getItem(this.storageKey);
         return stored ? JSON.parse(stored) : [];
     }
 
+    // ulozi kosik do localStorage a refreshne UI
     saveCart() {
         localStorage.setItem(this.storageKey, JSON.stringify(this.cart));
         this.updateCartUI();
     }
 
+    // prida produkt - ak uz existuje, zvysi mnozstvo
     addItem(productId, productName, price, quantity = 1) {
         const id = Number(productId);
-        const safeQty = Math.max(1, Number(quantity) || 1);
+        const safeQty = Math.max(1, Number(quantity) || 1);  // minimalne 1 ks
         const existingItem = this.cart.find(item => Number(item.id) === id);
 
         if (existingItem) {
@@ -36,6 +40,7 @@ class ShoppingCart {
         return true;
     }
 
+    // vymaze produkt z kosika podla ID
     removeItem(productId) {
         const id = Number(productId);
         this.cart = this.cart.filter(item => Number(item.id) !== id);
@@ -43,6 +48,7 @@ class ShoppingCart {
         return true;
     }
 
+    // zmeni mnozstvo produktu (volane z inputu v renderCartItems)
     updateQuantity(productId, quantity) {
         const id = Number(productId);
         const qty = Math.max(1, Number(quantity) || 1);
@@ -54,6 +60,7 @@ class ShoppingCart {
         return true;
     }
 
+    // vyprazdni cely kosik
     clearCart() {
         this.cart = [];
         this.saveCart();
@@ -64,15 +71,19 @@ class ShoppingCart {
         return this.cart;
     }
 
+    // sucet vsetkych kusov (pre badge v nav)
     getItemCount() {
         return this.cart.reduce((sum, item) => sum + item.quantity, 0);
     }
 
+    // celkova cena v EUR
     getTotalPrice() {
         return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     }
 
+    // aktualizuje vsetky UI elementy - badge, tabulku, cenu
     updateCartUI() {
+        // badge v navigacii (.cart-count)
         const cartIcon = document.querySelector('.cart-icon');
         const cartCountEl = document.querySelector('.cart-count');
         const count = this.getItemCount();
@@ -84,11 +95,13 @@ class ShoppingCart {
             cartCountEl.textContent = String(count);
         }
 
+        // tabulka v cart.blade.php a checkout.blade.php
         const cartContainer = document.getElementById('cart-items');
         if (cartContainer) {
             this.renderCartItems(cartContainer);
         }
 
+        // celkova cena
         const totalEl =
             document.getElementById('cart-total-price') ||
             document.getElementById('total-price');
@@ -98,6 +111,7 @@ class ShoppingCart {
         }
     }
 
+    // vygeneruje HTML tabulku s polozkami kosika
     renderCartItems(container) {
         if (this.cart.length === 0) {
             container.innerHTML = '<p class="text-center text-muted">Košík je prázdny</p>';
@@ -108,6 +122,7 @@ class ShoppingCart {
 
         this.cart.forEach(item => {
             const itemTotal = (item.price * item.quantity).toFixed(2);
+            // onchange vola globalny cart.updateQuantity()
             html += `
                 <tr>
                     <td>${item.name}</td>
@@ -131,6 +146,7 @@ class ShoppingCart {
         container.innerHTML = html;
     }
 
+    // popup notifikacia vpravo hore (zmizne po 3s)
     showNotification(message) {
         const notification = document.createElement('div');
         notification.textContent = message;
@@ -153,16 +169,19 @@ class ShoppingCart {
         }, 3000);
     }
 
+    // exportuje kosik ako JSON string pre hidden input vo formulari
     exportForCheckout() {
         return JSON.stringify(this.cart);
     }
 }
 
+// globalna instancia - dostupna vsade ako window.cart
 window.cart = null;
 document.addEventListener('DOMContentLoaded', function() {
     window.cart = new ShoppingCart();
 });
 
+// CSS animacia pre notifikaciu
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideIn {
