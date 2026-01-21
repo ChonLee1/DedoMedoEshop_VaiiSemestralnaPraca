@@ -1,0 +1,100 @@
+/* ===== Buttons ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.62rem 1.05rem;
+    border-radius: var(--rPill);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    font-weight: 700;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.btn:hover {
+    border-color: rgba(31, 41, 55, 0.35);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    opacity: 0.92;
+}
+
+.btn-secondary {
+    background: transparent;
+    border-color: #fff;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    opacity: 0.92;
+}
+
+.btn-success {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+}
+
+.btn-danger {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    opacity: 0.92;
+}
+
+.btn-outline-primary {
+    background: transparent;
+    border-color: var(--brand);
+    color: var(--brand);
+}
+
+.btn-outline-primary:hover {
+    background: var(--brandBg);
+}
+
+.btn-outline-secondary {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.btn-outline-secondary:hover {
+    background: #f9fafb;
+}
+
+.btn-outline-danger {
+    background: transparent;
+    border-color: #dc2626;
+    color: #dc2626;
+}
+
+.btn-outline-danger:hover {
+    background: #fee2e2;
+}
+
+.btn-lg {
+    padding: 0.75rem 1.2rem;
+}
+
+.btn-sm {
+    padding: 0.48rem 0.85rem;
+    font-size: 0.92rem;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+

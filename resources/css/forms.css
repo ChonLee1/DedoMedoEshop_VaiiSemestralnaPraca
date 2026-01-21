@@ -1,0 +1,76 @@
+/* ===== Products filter (select + input) ===== */
+.product-filter {
+    background: var(--brandBg);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 14px;
+    margin: 16px 0 18px;
+}
+
+.filter-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: end;
+}
+
+.filter-group label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+.filter-group select,
+.filter-group input {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border-radius: var(--r);
+    border: 1px solid var(--border);
+    background: #fff;
+    font: inherit;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    outline: none;
+    border-color: rgba(217, 119, 6, 0.55);
+}
+
+/* mobil: filter pod seba */
+@media (max-width: 640px) {
+    .filter-group {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== Products list grid ===== */
+#products-list {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    gap: 14px !important;
+    margin: 18px 0 !important;
+    align-items: stretch;
+}
+
+/* všetky priame deti nech sa správajú ako grid item (a nie full-row) */
+#products-list > * {
+    grid-column: auto !important;
+    width: auto !important;
+    min-width: 0;
+}
+
+/* ak produkty renderuješ do .product-card */
+#products-list .product-card {
+    width: auto !important;
+    max-width: none !important;
+}
+
+/* len "Načítavam..." nech ide cez celú šírku */
+#products-list > p.text-muted {
+    grid-column: 1 / -1 !important;
+    text-align: center;
+    padding: 14px;
+    margin: 0;
+}
+
