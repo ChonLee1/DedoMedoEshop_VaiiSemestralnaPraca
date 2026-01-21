@@ -71,21 +71,9 @@
                     Produkt nie je dostupný
                 </button>
             @endif
-
-            {{-- DODATOČNÉ INFO --}}
-            @if($product->harvestBatch)
-                <div style="background: #fff3cd; padding: 1rem; border-radius: 4px; border-left: 4px solid #ffc107;">
-                    <h4 style="margin-top: 0;">🌾 Informácie o zbierke</h4>
-                    <p style="margin: 0;">
-                        Rok: <strong>{{ $product->harvestBatch->year }}</strong><br>
-                        Lokalita: <strong>{{ $product->harvestBatch->location }}</strong>
-                    </p>
-                </div>
-            @endif
         </div>
     </div>
 
-    {{-- SPÄŤ NA PRODUKTY --}}
     <div style="margin-top: 3rem;">
         <a href="{{ route('products.index') }}" class="btn btn-outline-primary">
             ← Späť na produkty

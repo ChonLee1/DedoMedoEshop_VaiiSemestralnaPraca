@@ -37,12 +37,6 @@ Route::get('/cart', function () {
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout.show');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN SEKCIA (login + dashboard + správa)
-|--------------------------------------------------------------------------
-*/
-
 // PRESMEROVANIE /admin na login alebo dashboard
 Route::get('/admin', function () {
     if (auth()->check()) {
