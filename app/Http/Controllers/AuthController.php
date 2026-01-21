@@ -22,12 +22,10 @@ class AuthController
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // Ak je admin, presmeruj na admin dashboard
             if (auth()->user()->is_admin()) {
                 return redirect()->route('admin.dashboard');
             }
 
-            // Inak na home
             return redirect()->route('home');
         }
 

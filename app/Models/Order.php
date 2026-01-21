@@ -22,17 +22,11 @@ class Order extends Model
         'updated_at' => 'datetime',
     ];
 
-    /**
-     * Položky objednávky
-     */
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
-    /**
-     * Možné stavy objednávky
-     */
     public static function statuses(): array
     {
         return [
@@ -44,17 +38,11 @@ class Order extends Model
         ];
     }
 
-    /**
-     * Konverzia total_cents na EUR
-     */
     public function getTotalEurAttribute(): float
     {
         return $this->total_cents / 100;
     }
 
-    /**
-     * Generovania unique kódu objednávky
-     */
     public static function generateCode(): string
     {
         $year = now()->year;

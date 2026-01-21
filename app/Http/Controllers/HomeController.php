@@ -7,13 +7,8 @@ use App\Models\Category;
 
 class HomeController extends Controller
 {
-    /**
-     * GET /
-     * Úvodná stránka s vybranými produktami
-     */
     public function index()
     {
-        // Načítame 6 aktívnych produktov s kategóriami
         $products = Product::where('is_active', true)
             ->with('category')
             ->latest()

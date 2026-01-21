@@ -11,9 +11,6 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    /**
-     * ADMIN: Zoznam produktov
-     */
     public function adminIndex()
     {
         $products = Product::with('category')->get();
@@ -22,9 +19,6 @@ class ProductController extends Controller
         return view('admin-products', compact('products', 'categories'));
     }
 
-    /**
-     * ADMIN: Toggle aktívnosť produktu
-     */
     public function toggleActive(Product $product)
     {
         $product->update(['is_active' => !$product->is_active]);
@@ -32,9 +26,6 @@ class ProductController extends Controller
         return back()->with('success', 'Stav produktu bol zmenený');
     }
 
-    /**
-     * ADMIN: Vytvorenie nového produktu
-     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -58,15 +49,8 @@ class ProductController extends Controller
         return back()->with('success', 'Produkt bol úspešne vytvorený!');
     }
 
-    /**
-     * ADMIN: Update produktu (podporí aj upload obrázka, aj čiastočný update)
-     *
-     * DÔLEŽITÉ: Pravidlá validácie "sometimes" umožňujú, aby mini formuláre
-     * posielali len čiastočné údaje (len image alebo len stock).
-     */
     public function update(Request $request, Product $product)
     {
-        // validuj len to, čo reálne posielaš z mini formulárov
         $data = $request->validate([
             'name' => ['sometimes', 'string', 'max:255'],
             'price_cents' => ['sometimes', 'integer', 'min:0'],
@@ -90,16 +74,12 @@ class ProductController extends Controller
         return back()->with('success', 'Produkt bol upravený.');
     }
 
-    /**
-     * ADMIN: Zmazanie produktu
-     */
     public function destroy(Product $product)
     {
         $imagePath = $product->image_path;
 
         $product->delete();
 
-        // Maz obrázok iba ak ho nepoužíva žiadny iný produkt
         if ($imagePath) {
             $otherProductsWithImage = Product::where('image_path', $imagePath)->count();
 

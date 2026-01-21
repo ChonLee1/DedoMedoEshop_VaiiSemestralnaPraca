@@ -94,7 +94,6 @@
 </div>
 
 <script>
-// Pridať do košíka handler
 document.addEventListener('DOMContentLoaded', function() {
     const btn = document.querySelector('.add-to-cart-btn');
     if (!btn) return;

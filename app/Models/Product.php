@@ -29,33 +29,21 @@ class Product extends Model
         'stock' => 'integer',
     ];
 
-    /**
-     * Kategória k ktorej patrí tento produkt
-     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    /**
-     * Zbierka z ktorej pochádza tento produkt
-     */
     public function harvestBatch(): BelongsTo
     {
         return $this->belongsTo(HarvestBatch::class);
     }
 
-    /**
-     * Položky objednávok pre tento produkt
-     */
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
-    /**
-     * Skratka na cenu v EUR
-     */
     public function getPriceEurAttribute(): float
     {
         return $this->price_cents / 100;

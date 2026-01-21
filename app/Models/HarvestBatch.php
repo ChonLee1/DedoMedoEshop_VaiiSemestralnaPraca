@@ -22,17 +22,11 @@ class HarvestBatch extends Model
         'brix' => 'float',
     ];
 
-    /**
-     * Produkty z tejto zbierky
-     */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
-    /**
-     * Vzorec pre display: "2024 - Nitriansky kraj"
-     */
     public function getDisplayNameAttribute(): string
     {
         return "{$this->year} - {$this->location}";

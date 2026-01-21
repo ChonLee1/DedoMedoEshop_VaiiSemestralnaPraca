@@ -74,28 +74,21 @@ class APIClient {
     }
 }
 
-// Globálna inštancia
 window.api = new APIClient('/api');
 
 // ==================== PRODUCT FILTER ====================
-
-/**
- * Inicializuj filter na stránke produktov
- */
 function initProductFilter() {
     const categorySelect = document.getElementById('category-filter');
     const searchInput = document.getElementById('search-filter');
     const productsContainer = document.getElementById('products-list');
     const noResultsMsg = document.getElementById('no-results');
 
-    if (!categorySelect && !searchInput) return; // Filter neexistuje na tejto stránke
+    if (!categorySelect && !searchInput) return;
 
-    // Event listener na zmenu kategórie
     if (categorySelect) {
         categorySelect.addEventListener('change', () => filterAndDisplay());
     }
 
-    // Event listener na zmenu vyhľadávania (s debounce)
     if (searchInput) {
         let debounceTimer;
         searchInput.addEventListener('input', () => {
@@ -104,14 +97,10 @@ function initProductFilter() {
         });
     }
 
-    /**
-     * Filtruj produkty a zobraz výsledky
-     */
     async function filterAndDisplay() {
         const categoryId = categorySelect?.value || null;
         const searchTerm = searchInput?.value || null;
 
-        // Pokazať loading state
         if (productsContainer) {
             productsContainer.innerHTML = '<p class="text-muted">Načítavam...</p>';
         }
@@ -135,7 +124,6 @@ function initProductFilter() {
             return;
         }
 
-        // Zobraz produkty
         if (productsContainer) {
             productsContainer.innerHTML = products.map(product => `
                 <div class="product-card">
@@ -166,7 +154,6 @@ function initProductFilter() {
                 </div>
             `).join('');
 
-            // Pripojiť event listeners na "Pridať do košíka" tlačidlá
             document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
                 btn.addEventListener('click', handleAddToCart);
             });
@@ -175,15 +162,9 @@ function initProductFilter() {
         if (noResultsMsg) noResultsMsg.style.display = 'none';
     }
 
-    // Počiatočný load
     filterAndDisplay();
 }
 
-// ==================== SHOPPING CART ====================
-
-/**
- * Spracuj klik na "Pridať do košíka"
- */
 async function handleAddToCart(event) {
     const btn = event.target;
     const productCard = btn.closest('.product-card');
@@ -192,13 +173,11 @@ async function handleAddToCart(event) {
     const priceText = productCard?.querySelector('.price')?.textContent || '0 €';
     const price = parseFloat(priceText.replace('€', '').replace(',', '.'));
 
-    // Showing loading state
     btn.disabled = true;
     const originalText = btn.textContent;
     btn.textContent = 'Pridávam...';
 
     try {
-        // Pridaj do nášho cart objektu
         if (typeof cart !== 'undefined') {
             cart.addItem(productId, productName, price, 1);
             btn.textContent = '✅ Pridané!';
@@ -221,9 +200,6 @@ async function handleAddToCart(event) {
     }
 }
 
-/**
- * Aktualizuj počítadlo košíka v navigácii
- */
 function updateCartCount() {
     const cartCount = document.querySelector('.cart-count');
     if (cartCount) {
@@ -232,7 +208,6 @@ function updateCartCount() {
     }
 }
 
-// ==================== INICIALIZÁCIA ====================
 
 document.addEventListener('DOMContentLoaded', () => {
     initProductFilter();

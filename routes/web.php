@@ -9,12 +9,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 
-/*
-|--------------------------------------------------------------------------
-| VEREJNÉ STRÁNKY (5 stránok)
-|--------------------------------------------------------------------------
-*/
-
 // 1. DOMOV
 Route::get('/', [HomeController::class, 'index'])->name('home');
 

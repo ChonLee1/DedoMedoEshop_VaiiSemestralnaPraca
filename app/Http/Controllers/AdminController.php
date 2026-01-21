@@ -10,13 +10,8 @@ use Illuminate\Support\Collection;
 
 class AdminController extends Controller
 {
-    /**
-     * GET /admin/dashboard
-     * Admin dashboard s štatistikami
-     */
     public function dashboard()
     {
-        // Základné štatistiky
         $totalProducts = 0;
         $activeProducts = 0;
         $totalCategories = 0;
@@ -33,7 +28,6 @@ class AdminController extends Controller
                 $totalRevenue = (Order::sum('total_cents') ?? 0) / 100;
             }
         } catch (\Exception $e) {
-            // Ticho fallback ak je chyba
             \Log::error('Admin Dashboard Error: ' . $e->getMessage());
         }
 
@@ -46,10 +40,6 @@ class AdminController extends Controller
         ));
     }
 
-    /**
-     * GET /admin/stats
-     * AJAX endpoint pre admin dashboard štatistiky
-     */
     public function stats()
     {
         try {

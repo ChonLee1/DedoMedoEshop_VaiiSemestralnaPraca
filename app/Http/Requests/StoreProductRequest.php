@@ -22,7 +22,6 @@ class StoreProductRequest extends FormRequest
             'category_id'       => ['required', 'exists:categories,id'],
             'harvest_batch_id'  => ['nullable', 'exists:harvest_batches,id'],
 
-            // ✅ upload obrázka (form posiela name="image")
             'image'             => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
 
             'is_active'         => ['boolean'],
@@ -40,7 +39,6 @@ class StoreProductRequest extends FormRequest
             'category_id.required'  => 'Kategória je povinná',
             'category_id.exists'    => 'Zvolená kategória neexistuje',
 
-            // ✅ správy pre obrázok
             'image.image'           => 'Súbor musí byť obrázok',
             'image.mimes'           => 'Obrázok musí byť vo formáte JPG, PNG alebo WebP',
             'image.max'             => 'Obrázok môže mať max 2MB',

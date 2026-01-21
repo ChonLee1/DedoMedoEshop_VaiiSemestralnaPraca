@@ -53,20 +53,17 @@
     align-items: stretch;
 }
 
-/* všetky priame deti nech sa správajú ako grid item (a nie full-row) */
 #products-list > * {
     grid-column: auto !important;
     width: auto !important;
     min-width: 0;
 }
 
-/* ak produkty renderuješ do .product-card */
 #products-list .product-card {
     width: auto !important;
     max-width: none !important;
 }
 
-/* len "Načítavam..." nech ide cez celú šírku */
 #products-list > p.text-muted {
     grid-column: 1 / -1 !important;
     text-align: center;

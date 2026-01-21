@@ -1,3 +1,4 @@
+{{--Pomoc S AI--}}
 @extends('layouts.app')
 @section('title','Pokladňa - DedoMedo e-shop')
 @section('content')
@@ -27,13 +28,11 @@
                         if (window.cart && typeof window.cart.clearCart === 'function') {
                             window.cart.clearCart();
                         } else {
-                            // Fallback, ak cart inštancia ešte nie je k dispozícii
                             localStorage.removeItem('dedomedo_cart');
                             const countEl = document.querySelector('.cart-count');
                             if (countEl) countEl.textContent = '0';
                         }
                     } catch (e) {
-                        // V najhoršom prípade aspoň zmaž localStorage
                         localStorage.removeItem('dedomedo_cart');
                     }
                 });
@@ -148,10 +147,9 @@
     </div>
 
     <script>
-        // Pred submitom skopíruj cart items (len ak je na stránke formulár)
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.querySelector('form');
-            if (!form) return; // Na stránke úspechu nie je formulár
+            if (!form) return;
 
             form.addEventListener('submit', function(e) {
                 if (!window.cart || window.cart.getItemCount() === 0) {

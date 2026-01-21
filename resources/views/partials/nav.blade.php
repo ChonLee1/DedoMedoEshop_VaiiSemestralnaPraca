@@ -18,7 +18,6 @@
         </div>
 
 
-        {{-- Cart icon with dynamic count; links to cart page --}}
         <a href="{{ route('cart.show') }}" class="cart-icon" aria-label="Open cart" title="Košík">
             🛒
             <span class="cart-count" style="margin-left: 4px; font-weight: 600;">0</span>

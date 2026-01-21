@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+//Pomoc s AI
 class ProductController
 {
     public function index()
@@ -24,7 +25,6 @@ class ProductController
                     'is_active' => $product->is_active,
                     'category' => $product->category?->name ?? 'Bez kategórie',
 
-                    // ✅ obrázok
                     'image_path' => $product->image_path,
                     'image_url' => $product->image_path ? Storage::url($product->image_path) : null,
                 ];
@@ -62,8 +62,6 @@ class ProductController
                 'stock' => $product->stock,
                 'is_active' => $product->is_active,
                 'category' => $product->category?->name ?? 'Bez kategórie',
-
-                // ✅ obrázok
                 'image_path' => $product->image_path,
                 'image_url' => $product->image_path ? Storage::url($product->image_path) : null,
             ];

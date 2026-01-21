@@ -140,7 +140,6 @@ class DatabaseSeeder extends Seeder
                 'stock' => 20,
                 'is_active' => true,
             ],
-            // Kvetový mix
             [
                 'category_id' => $categories[3]->id,
                 'harvest_batch_id' => $batches[0]->id,

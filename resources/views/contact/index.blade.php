@@ -100,11 +100,11 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                 <div>
                     <h3 style="margin-bottom: 0.5rem;">📍 Adresa</h3>
-                    <p style="color: #666;">DedoMedo e-shop<br>Medová 123<br>Slovensko</p>
+                    <p style="color: #666;">DedoMedo e-shop<br>Slnečná 10 Trebišov<br>Slovensko</p>
                 </div>
                 <div>
                     <h3 style="margin-bottom: 0.5rem;">📞 Telefón</h3>
-                    <p style="color: #666;"><a href="tel:+421123456789" style="color: #d4a574; text-decoration: none;">+421 1 234 56789</a></p>
+                    <p style="color: #666;"><a href="tel:+421949580966" style="color: #d4a574; text-decoration: none;">+421 949 580 966</a></p>
                 </div>
                 <div>
                     <h3 style="margin-bottom: 0.5rem;">✉️ Email</h3>

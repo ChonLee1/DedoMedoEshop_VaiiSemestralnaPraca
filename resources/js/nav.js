@@ -1,5 +1,3 @@
-// javascript
-// resources/js/nav.js (debug version)
 document.addEventListener('DOMContentLoaded', () => {
     console.log('nav.js: DOMContentLoaded');
 
@@ -15,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Ensure initial ARIA
         toggle.setAttribute('aria-expanded', 'false');
         menu.setAttribute('aria-hidden', 'true');
 
@@ -36,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         toggle.addEventListener('click', (e) => {
-            // If using <summary> inside <details>, prevent native details toggle
             if (toggle.tagName.toLowerCase() === 'summary') e.preventDefault();
             e.stopPropagation();
             const isOpen = toggle.getAttribute('aria-expanded') === 'true';

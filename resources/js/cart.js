@@ -1,8 +1,3 @@
-/**
- * DedoMedo Shopping Cart
- * Správa košíka pomocou localStorage
- */
-
 class ShoppingCart {
     constructor() {
         this.storageKey = 'dedomedo_cart';
@@ -10,28 +5,19 @@ class ShoppingCart {
         this.updateCartUI();
     }
 
-    /**
-     * Načítaj košík z localStorage
-     */
     loadCart() {
         const stored = localStorage.getItem(this.storageKey);
         return stored ? JSON.parse(stored) : [];
     }
 
-    /**
-     * Ulož košík do localStorage
-     */
     saveCart() {
         localStorage.setItem(this.storageKey, JSON.stringify(this.cart));
         this.updateCartUI();
     }
 
-    /**
-     * Pridaj produkt do košíka
-     */
     addItem(productId, productName, price, quantity = 1) {
         const id = Number(productId);
-        const safeQty = Math.max(1, Number(quantity) || 1); // clamp to at least 1
+        const safeQty = Math.max(1, Number(quantity) || 1);
         const existingItem = this.cart.find(item => Number(item.id) === id);
 
         if (existingItem) {
@@ -50,9 +36,6 @@ class ShoppingCart {
         return true;
     }
 
-    /**
-     * Odstráň produkt z košíka
-     */
     removeItem(productId) {
         const id = Number(productId);
         this.cart = this.cart.filter(item => Number(item.id) !== id);
@@ -60,12 +43,9 @@ class ShoppingCart {
         return true;
     }
 
-    /**
-     * Uprav množstvo produktu
-     */
     updateQuantity(productId, quantity) {
         const id = Number(productId);
-        const qty = Math.max(1, Number(quantity) || 1); // ensure quantity stays positive
+        const qty = Math.max(1, Number(quantity) || 1);
         const item = this.cart.find(item => Number(item.id) === id);
         if (item) {
             item.quantity = qty;
@@ -74,41 +54,25 @@ class ShoppingCart {
         return true;
     }
 
-    /**
-     * Vymaž celý košík
-     */
     clearCart() {
         this.cart = [];
         this.saveCart();
         return true;
     }
 
-    /**
-     * Vrať všetky položky v košíku
-     */
     getItems() {
         return this.cart;
     }
 
-    /**
-     * Vrať počet položiek v košíku
-     */
     getItemCount() {
         return this.cart.reduce((sum, item) => sum + item.quantity, 0);
     }
 
-    /**
-     * Vrať celkovú cenu v EUR
-     */
     getTotalPrice() {
         return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     }
 
-    /**
-     * Aktualizuj UI - počet položiek, cena
-     */
     updateCartUI() {
-        // Aktualizuj counter v navigácii
         const cartIcon = document.querySelector('.cart-icon');
         const cartCountEl = document.querySelector('.cart-count');
         const count = this.getItemCount();
@@ -120,13 +84,11 @@ class ShoppingCart {
             cartCountEl.textContent = String(count);
         }
 
-        // Aktualizuj košík v checkout ak existuje
         const cartContainer = document.getElementById('cart-items');
         if (cartContainer) {
             this.renderCartItems(cartContainer);
         }
 
-        // Aktualizuj celkovú cenu
         const totalEl =
             document.getElementById('cart-total-price') ||
             document.getElementById('total-price');
@@ -136,9 +98,6 @@ class ShoppingCart {
         }
     }
 
-    /**
-     * Vykresli items v košíku
-     */
     renderCartItems(container) {
         if (this.cart.length === 0) {
             container.innerHTML = '<p class="text-center text-muted">Košík je prázdny</p>';
@@ -172,11 +131,7 @@ class ShoppingCart {
         container.innerHTML = html;
     }
 
-    /**
-     * Zobraz notifikáciu
-     */
     showNotification(message) {
-        // Vytvor notifikáciu v rovnom rohu
         const notification = document.createElement('div');
         notification.textContent = message;
         notification.style.cssText = `
@@ -198,22 +153,16 @@ class ShoppingCart {
         }, 3000);
     }
 
-    /**
-     * Export košíka ako JSON pre server
-     */
     exportForCheckout() {
         return JSON.stringify(this.cart);
     }
 }
 
-// Inicializuj globálny cart objekt
-// Replace local variable with window-scoped instance for ES module context
 window.cart = null;
 document.addEventListener('DOMContentLoaded', function() {
     window.cart = new ShoppingCart();
 });
 
-// Pridaj CSS animáciu
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideIn {

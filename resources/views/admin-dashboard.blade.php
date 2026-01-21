@@ -1,3 +1,4 @@
+{{--Pomoc S AI--}}
 @extends('layouts.app')
 
 @section('title', 'Admin Dashboard')
@@ -56,9 +57,7 @@
 </div>
 
 <script>
-/**
- * AJAX načítavanie admin štatistík
- */
+
 let statsRefreshInterval = null;
 
 async function loadAdminStats() {
@@ -94,7 +93,6 @@ async function loadAdminStats() {
 
         const stats = result.data;
 
-        // Aktualizuj štatistiky v UI
         document.getElementById('stat-total-products').textContent = stats.total_products;
         document.getElementById('stat-active-products').innerHTML =
             `Aktívnych: ${stats.active_products}`;
@@ -108,7 +106,6 @@ async function loadAdminStats() {
         document.getElementById('stat-total-revenue').textContent =
             stats.total_revenue.toFixed(2) + ' €';
 
-        // Success feedback
         if (refreshBtn) {
             refreshBtn.textContent = '✅ Obnovené!';
             setTimeout(() => {
@@ -129,7 +126,6 @@ async function loadAdminStats() {
     }
 }
 
-// Inicializácia
 document.addEventListener('DOMContentLoaded', () => {
     const refreshBtn = document.getElementById('refresh-stats-btn');
 
@@ -137,14 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
         refreshBtn.addEventListener('click', loadAdminStats);
     }
 
-    // Prvé načítanie po 2 sekundách
     setTimeout(() => loadAdminStats(), 2000);
 
-    // Auto-refresh každých 30 sekúnd
     statsRefreshInterval = setInterval(() => loadAdminStats(), 30000);
 });
 
-// Cleanup
 window.addEventListener('beforeunload', () => {
     if (statsRefreshInterval) {
         clearInterval(statsRefreshInterval);
