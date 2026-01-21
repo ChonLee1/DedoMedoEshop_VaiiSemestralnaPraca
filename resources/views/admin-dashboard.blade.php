@@ -1,4 +1,5 @@
-{{--Pomoc S AI--}}
+{{--Pomoc s AI--}}
+{{-- AJAX auto-refresh statistik kazdych 30s --}}
 @extends('layouts.app')
 
 @section('title', 'Admin Dashboard')
@@ -55,22 +56,27 @@
     </div>
 
 </div>
+@endsection
 
+@push('scripts')
 <script>
-
+// interval pre auto-refresh, uklada sa aby sa dal zrusit
 let statsRefreshInterval = null;
 
+// AJAX volanie na /admin/stats - nacita statistiky z DB
 async function loadAdminStats() {
     const refreshBtn = document.getElementById('refresh-stats-btn');
 
+    // disable tlacidlo pocas loadingu
     if (refreshBtn) {
         refreshBtn.disabled = true;
         refreshBtn.textContent = '⏳ Načítavam...';
     }
 
     try {
-        console.log('🔄 Načítavam štatistiky z /admin/stats...');
+        console.log('🔄 Načítavam štatistiky...');
 
+        // fetch na backend - vrati JSON so statistikami
         const response = await fetch('/admin/stats', {
             method: 'GET',
             headers: {
@@ -85,27 +91,23 @@ async function loadAdminStats() {
         }
 
         const result = await response.json();
-        console.log('✅ API odpoveď:', result);
 
         if (!result.success) {
             throw new Error(result.error || 'Neznáma chyba');
         }
 
+        // aktualizuj DOM s novymi datami
         const stats = result.data;
-
         document.getElementById('stat-total-products').textContent = stats.total_products;
-        document.getElementById('stat-active-products').innerHTML =
-            `Aktívnych: ${stats.active_products}`;
-
+        document.getElementById('stat-active-products').innerHTML = `Aktívnych: ${stats.active_products}`;
         document.getElementById('stat-total-categories').textContent = stats.total_categories;
-
         document.getElementById('stat-total-orders').textContent = stats.total_orders;
-        document.getElementById('stat-pending-orders').innerHTML =
-            `Čakajúcich: ${stats.pending_orders}`;
+        document.getElementById('stat-pending-orders').innerHTML = `Čakajúcich: ${stats.pending_orders}`;
+        document.getElementById('stat-total-revenue').textContent = stats.total_revenue.toFixed(2) + ' €';
 
-        document.getElementById('stat-total-revenue').textContent =
-            stats.total_revenue.toFixed(2) + ' €';
+        console.log('✅ Štatistiky načítané');
 
+        // success feedback na tlacidlo
         if (refreshBtn) {
             refreshBtn.textContent = '✅ Obnovené!';
             setTimeout(() => {
@@ -116,6 +118,7 @@ async function loadAdminStats() {
 
     } catch (error) {
         console.error('❌ AJAX Error:', error);
+        // error feedback
         if (refreshBtn) {
             refreshBtn.textContent = '❌ Chyba';
             setTimeout(() => {
@@ -127,21 +130,27 @@ async function loadAdminStats() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Admin dashboard AJAX init');
+
     const refreshBtn = document.getElementById('refresh-stats-btn');
 
+    // manual refresh cez tlacidlo (ak existuje)
     if (refreshBtn) {
         refreshBtn.addEventListener('click', loadAdminStats);
     }
 
+    // prvy load po 2s
     setTimeout(() => loadAdminStats(), 2000);
 
+    // auto-refresh kazdych 30s
     statsRefreshInterval = setInterval(() => loadAdminStats(), 30000);
 });
 
+// cleanup intervalu pri odchode zo stranky
 window.addEventListener('beforeunload', () => {
     if (statsRefreshInterval) {
         clearInterval(statsRefreshInterval);
     }
 });
 </script>
-@endsection
+@endpush
