@@ -88,3 +88,6 @@
                     <p style="color: #999; font-size: 1.1rem;">Žiadne produkty nie sú dostupné.</p>
                 </div>
             @endforelse
+        </div>
+    </div>
+@endsection

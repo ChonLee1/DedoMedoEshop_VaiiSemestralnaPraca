@@ -19,6 +19,25 @@
                     ← Pokračovať v nákupe
                 </a>
             </div>
+
+            <!-- Po úspešnej objednávke vyprázdni košík (localStorage) a aktualizuj UI -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    try {
+                        if (window.cart && typeof window.cart.clearCart === 'function') {
+                            window.cart.clearCart();
+                        } else {
+                            // Fallback, ak cart inštancia ešte nie je k dispozícii
+                            localStorage.removeItem('dedomedo_cart');
+                            const countEl = document.querySelector('.cart-count');
+                            if (countEl) countEl.textContent = '0';
+                        }
+                    } catch (e) {
+                        // V najhoršom prípade aspoň zmaž localStorage
+                        localStorage.removeItem('dedomedo_cart');
+                    }
+                });
+            </script>
         @endif
 
         @if ($errors->any())
@@ -117,10 +136,10 @@
                         <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 1rem; cursor: pointer;">
                             Potvrdiť Objednávku 🎉
                         </button>
+                        </div>
                     </form>
                 </div>
             </div>
-        </div>
 
         <div style="margin-top: 2rem;">
             <a href="{{ route('products.index') }}" class="btn btn-outline-primary">← Pokračovať v nákupe</a>
@@ -129,15 +148,20 @@
     </div>
 
     <script>
-        // Pred submitom skopíruj cart items
-        document.querySelector('form').addEventListener('submit', function(e) {
-            if (cart.getItemCount() === 0) {
-                e.preventDefault();
-                alert('Košík je prázdny! Pridaj produkty pred objednávkou.');
-                return false;
-            }
-            document.getElementById('cart_items').value = cart.exportForCheckout();
+        // Pred submitom skopíruj cart items (len ak je na stránke formulár)
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            if (!form) return; // Na stránke úspechu nie je formulár
+
+            form.addEventListener('submit', function(e) {
+                if (!window.cart || window.cart.getItemCount() === 0) {
+                    e.preventDefault();
+                    alert('Košík je prázdny! Pridaj produkty pred objednávkou.');
+                    return false;
+                }
+                const hidden = document.getElementById('cart_items');
+                if (hidden) hidden.value = window.cart.exportForCheckout();
+            });
         });
     </script>
 @endsection
-

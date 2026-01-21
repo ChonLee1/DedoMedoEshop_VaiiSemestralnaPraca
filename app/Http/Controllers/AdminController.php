@@ -45,4 +45,32 @@ class AdminController extends Controller
             'totalRevenue'
         ));
     }
+
+    /**
+     * GET /admin/stats
+     * AJAX endpoint pre admin dashboard štatistiky
+     */
+    public function stats()
+    {
+        try {
+            $stats = [
+                'total_products' => Product::count(),
+                'active_products' => Product::where('is_active', true)->count(),
+                'total_categories' => Category::count(),
+                'total_orders' => Order::count(),
+                'pending_orders' => Order::where('status', 'pending')->count(),
+                'total_revenue' => round((Order::sum('total_cents') ?? 0) / 100, 2),
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $stats
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Chyba pri načítaní štatistík'
+            ], 500);
+        }
+    }
 }

@@ -20,9 +20,7 @@ class ContactController extends Controller
             'message' => 'required|string|min:10',
         ]);
 
-        // TODO: Send email or save to database
-        // For now, just redirect with success message
+        // TODO: Send email or save to database (reverted to original behavior)
         return redirect()->route('contact.index')->with('success', 'Ďakujeme za vašu správu. Odpovíme vám čoskoro!');
     }
 }
-

@@ -71,6 +71,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
+    // AJAX endpoint pre štatistiky
+    Route::get('/stats', [AdminController::class, 'stats'])->name('admin.stats');
+
     // Správa produktov
     Route::get('/products', [ProductController::class, 'adminIndex'])->name('admin.products');
     Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');

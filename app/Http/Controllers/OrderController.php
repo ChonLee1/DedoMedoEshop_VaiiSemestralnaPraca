@@ -86,8 +86,8 @@ class OrderController extends Controller
                     'unit_price_cents' => (int) ($item['price'] * 100), // ceny v centoch
                 ]);
 
-                // Znižuj stock (voliteľne)
-                // $product->decrement('stock', $item['quantity']);
+                // Zníženie skladu po objednávke
+                $product->decrement('stock', $item['quantity']);
             }
 
             // Vrátenie s úspechom

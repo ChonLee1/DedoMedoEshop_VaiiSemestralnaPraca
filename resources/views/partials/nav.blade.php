@@ -10,7 +10,6 @@
         </button>
 
         <div id="nav-menu" class="nav__menu" role="region" aria-label="Main menu" aria-hidden="true">
-            <button class="nav__close mobile-only" aria-label="Close menu">&times;</button>
             <ul class="nav__links">
                 <li><a href="{{ route('home') }}" class="nav__link {{ request()->routeIs('home') ? 'active' : '' }}">Domov</a></li>
                 <li><a href="{{ route('products.index') }}" class="nav__link {{ request()->routeIs('products.*') ? 'active' : '' }}">Produkty</a></li>
